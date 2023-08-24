@@ -1,0 +1,17 @@
+[tool.poetry]
+name = "django-flippy"
+version = "0.1.0"
+description = "A [Flipper Cloud](https://www.flippercloud.io/) package for Django apps."
+authors = ["Matt Cooper <vtbassmatt@gmail.com>"]
+readme = "README.md"
+packages = [{include = "flippy"}]
+
+[tool.poetry.dependencies]
+python = "^3.11"
+django = "^4.2.4"
+httpx = "^0.24.1"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
