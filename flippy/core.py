@@ -70,7 +70,7 @@ class Feature:
         return self
 
 
-class BaseFlippy(metaclass=ABCMeta):
+class BaseBackend(metaclass=ABCMeta):
     """
     Flipper established a protocol for adapters to implement.
     This is the Pythonic implementation of it.
@@ -149,4 +149,4 @@ class BaseFlippy(metaclass=ABCMeta):
         return key in self.features()
     # end dict implementation
 
-BaseFlippy.register(dict)
+BaseBackend.register(dict)

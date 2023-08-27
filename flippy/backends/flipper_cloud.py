@@ -4,7 +4,7 @@ import sys
 
 import httpx
 
-from flippy.core import BaseFlippy, Feature, FeatureName
+from flippy.core import BaseBackend, Feature, FeatureName
 from flippy.exceptions import (FeatureNotFound, FlipperIdInvalid,
                                GroupNotRegistered, NameInvalid,
                                PercentageInvalid)
@@ -34,7 +34,7 @@ HEADERS = {
 # This makes many requests idempotent, but also makes it hard to surface
 # problems to the consumer. 🤷
 
-class FlipperCloud(BaseFlippy):
+class FlipperCloudBackend(BaseBackend):
     """
     Get flags direct from Flipper Cloud.
     

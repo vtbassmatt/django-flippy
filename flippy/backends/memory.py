@@ -1,11 +1,11 @@
-from flippy.core import BaseFlippy, Feature, FeatureName
+from flippy.core import BaseBackend, Feature, FeatureName
 from flippy.exceptions import FeatureNotFound
 from flippy.gates import (ActorsGate, BooleanGate, ExpressionGate, Gate,
                           GroupsGate, PercentageOfActorsGate,
                           PercentageOfTimeGate)
 
 
-class MemoryFlippy(BaseFlippy):
+class MemoryBackend(BaseBackend):
     """A memory-only implementation of Flippy."""
     def __init__(self):
         self._features: dict[FeatureName: Feature] = {}
@@ -69,11 +69,11 @@ class MemoryFlippy(BaseFlippy):
                 return False
             case PercentageOfActorsGate():
                 # TODO: check if thing is int
-                feature.percentageofactors_gate.value = thing
+                feature.percentage_of_actors_gate.value = thing
                 return True
             case PercentageOfTimeGate():
                 # TODO: check if thing is int
-                feature.percentageoftime_gate.value = thing
+                feature.percentage_of_time_gate.value = thing
                 return True
             case ExpressionGate():
                 raise NotImplementedError("ExpressionGate isn't supported")

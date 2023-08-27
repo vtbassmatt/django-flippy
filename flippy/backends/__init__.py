@@ -1,7 +1,7 @@
-from flippy.backends.flipper_cloud import FlipperCloud
-from flippy.backends.memory import MemoryFlippy
+from flippy.backends.flipper_cloud import FlipperCloudBackend
+from flippy.backends.memory import MemoryBackend
 
 __all__ = [
-    FlipperCloud,
-    MemoryFlippy,
+    FlipperCloudBackend,
+    MemoryBackend,
 ]
