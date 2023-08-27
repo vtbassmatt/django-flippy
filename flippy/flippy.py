@@ -41,6 +41,16 @@ class Flippy:
     def create(self, feature: FeatureName) -> bool:
         return self._backend.add(feature)
     
+    def get_all_feature_names(self) -> set[FeatureName]:
+        return {f.key for f in self._backend.get_all()}
+    
+    def feature_exists(self, feature: FeatureName) -> bool:
+        try:
+            self._backend.get(feature)
+            return True
+        except FeatureNotFound:
+            return False
+    
     def enable(self, feature: FeatureName) -> None:
         try:
             f = self._backend.get(feature)
