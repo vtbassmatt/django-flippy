@@ -1,14 +1,23 @@
 from abc import ABCMeta, abstractmethod
 from dataclasses import dataclass, field
+from enum import Enum
 from typing import Literal, NewType
 
-from flippy.gates import (ActorsGate, BooleanGate, ExpressionGate, Gate,
-                          GroupsGate, PercentageOfActorsGate,
-                          PercentageOfTimeGate)
+from flippy.gates import (ActorsGate, BooleanGate, ExpressionGate, GroupsGate,
+                          PercentageOfActorsGate, PercentageOfTimeGate)
 
 FeatureName = NewType('FeatureName', str)
 
 FlagState = Literal['on', 'conditional', 'off']
+
+
+class Gate(Enum):
+    Boolean = 'boolean'
+    Actors = 'actors'
+    Groups = 'groups'
+    PercentageOfActors = 'percentage_of_actors'
+    PercentageOfTime = 'percentage_of_time'
+    Expression = 'expression'
 
 
 @dataclass

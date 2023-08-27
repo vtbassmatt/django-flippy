@@ -1,8 +1,5 @@
-from flippy.core import BaseBackend, Feature, FeatureName
+from flippy.core import BaseBackend, Feature, FeatureName, Gate
 from flippy.exceptions import FeatureNotFound
-from flippy.gates import (ActorsGate, BooleanGate, ExpressionGate, Gate,
-                          GroupsGate, PercentageOfActorsGate,
-                          PercentageOfTimeGate)
 
 
 class MemoryBackend(BaseBackend):
@@ -54,28 +51,28 @@ class MemoryBackend(BaseBackend):
         feature = self._features[feature]
 
         match gate:
-            case BooleanGate():
+            case Gate.Boolean:
                 feature.boolean_gate.value = True
                 return True
-            case ActorsGate():
+            case Gate.Actors:
                 if thing and thing not in feature.actors_gate.value:
                     feature.actors_gate.value.append(thing)
                     return True
                 return False
-            case GroupsGate():
+            case Gate.Groups:
                 if thing and thing not in feature.groups_gate.value:
                     feature.groups_gate.value.append(thing)
                     return True
                 return False
-            case PercentageOfActorsGate():
+            case Gate.PercentageOfActors:
                 # TODO: check if thing is int
                 feature.percentage_of_actors_gate.value = thing
                 return True
-            case PercentageOfTimeGate():
+            case Gate.PercentageOfTime:
                 # TODO: check if thing is int
                 feature.percentage_of_time_gate.value = thing
                 return True
-            case ExpressionGate():
+            case Gate.Expression:
                 raise NotImplementedError("ExpressionGate isn't supported")
             case _:
                 raise ValueError(f"{gate} is not a known gate type")
@@ -85,26 +82,26 @@ class MemoryBackend(BaseBackend):
         feature = self._features[feature]
 
         match gate:
-            case BooleanGate():
+            case Gate.Boolean:
                 feature.boolean_gate.value = False
                 return True
-            case ActorsGate():
+            case Gate.Actors:
                 if thing and thing in feature.actors_gate.value:
                     feature.actors_gate.value.remove(thing)
                     return True
                 return False
-            case GroupsGate():
+            case Gate.Groups:
                 if thing and thing in feature.groups_gate.value:
                     feature.groups_gate.value.remove(thing)
                     return True
                 return False
-            case PercentageOfActorsGate():
+            case Gate.PercentageOfActors:
                 feature.percentageofactors_gate.value = None
                 return True
-            case PercentageOfTimeGate():
+            case Gate.PercentageOfTime:
                 feature.percentageoftime_gate.value = None
                 return True
-            case ExpressionGate():
+            case Gate.Expression:
                 raise NotImplementedError("ExpressionGate isn't supported")
             case _:
                 raise ValueError(f"{gate} is not a known gate type")

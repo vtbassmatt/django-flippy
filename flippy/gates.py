@@ -1,6 +1,6 @@
-from dataclasses import dataclass
-from typing import Any, Literal, NewType, TYPE_CHECKING
 import random
+from dataclasses import dataclass
+from typing import TYPE_CHECKING, Any, NewType
 from zlib import crc32
 
 if TYPE_CHECKING:
@@ -11,18 +11,12 @@ Percentage = NewType('Percentage', int)
 
 @dataclass
 class BooleanGate:
-    key: Literal['boolean']
-    name: Literal['boolean']
-    value: bool | None
-
-    def __init__(self, value: bool | None=None):
-        self.key = self.name = 'boolean'
-        self.value = value
+    value: bool | None = None
 
     def to_api(self):
         return {
-            'key': self.key,
-            'name': self.name,
+            'key': 'boolean',
+            'name': 'boolean',
             'value': self.value,
         }
 
@@ -31,19 +25,15 @@ class BooleanGate:
 
 @dataclass
 class ActorsGate:
-    key: Literal['actors']
-    name: Literal['actor']
     value: list[str]
 
     def __init__(self, value: list[str]=None):
-        self.key = 'actors'
-        self.name = 'actor'
         self.value = value or []
 
     def to_api(self):
         return {
-            'key': self.key,
-            'name': self.name,
+            'key': 'actors',
+            'name': 'actor',
             'value': self.value,
         }
 
@@ -52,19 +42,15 @@ class ActorsGate:
 
 @dataclass
 class GroupsGate:
-    key: Literal['groups']
-    name: Literal['group']
     value: list[str]
 
     def __init__(self, value: list[str]=None):
-        self.key = 'groups'
-        self.name = 'group'
         self.value = value or []
 
     def to_api(self):
         return {
-            'key': self.key,
-            'name': self.name,
+            'key': 'groups',
+            'name': 'group',
             'value': self.value,
         }
 
@@ -73,18 +59,12 @@ class GroupsGate:
 
 @dataclass
 class PercentageOfActorsGate:
-    key: Literal['percentage_of_actors']
-    name: Literal['percentage_of_actors']
-    value: Percentage | None
-
-    def __init__(self, value: Percentage | None=None):
-        self.key = self.name = 'percentage_of_actors'
-        self.value = value
+    value: Percentage | None = None
 
     def to_api(self):
         return {
-            'key': self.key,
-            'name': self.name,
+            'key': 'percentage_of_actors',
+            'name': 'percentage_of_actors',
             'value': str(self.value) if self.value is not None else None,
         }
 
@@ -107,18 +87,12 @@ class PercentageOfActorsGate:
 
 @dataclass
 class PercentageOfTimeGate:
-    key: Literal['percentage_of_time']
-    name: Literal['percentage_of_time']
-    value: Percentage | None
-
-    def __init__(self, value: Percentage | None=None):
-        self.key = self.name = 'percentage_of_time'
-        self.value = value
+    value: Percentage | None = None
 
     def to_api(self):
         return {
-            'key': self.key,
-            'name': self.name,
+            'key': 'percentage_of_time',
+            'name': 'percentage_of_time',
             'value': str(self.value) if self.value is not None else None,
         }
 
@@ -131,26 +105,14 @@ class PercentageOfTimeGate:
 
 @dataclass
 class ExpressionGate:
-    key: Literal['expression']
-    name: Literal['expression']
-    value: Any # TODO
-
-    def __init__(self, value=None):
-        self.key = self.name = 'expression'
-        self.value = value
+    value: Any = None # TODO
 
     def to_api(self):
         return {
-            'key': self.key,
-            'name': self.name,
+            'key': 'expression',
+            'name': 'expression',
             'value': self.value,
         }
 
     def is_open(self, target: str, feature: 'FeatureName'):
         return False
-
-Gate = (
-    BooleanGate | ActorsGate | GroupsGate | 
-    PercentageOfActorsGate | PercentageOfTimeGate |
-    ExpressionGate
-)

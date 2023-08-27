@@ -1,9 +1,5 @@
-from flippy.core import BaseBackend, FeatureName
+from flippy.core import BaseBackend, FeatureName, Gate
 from flippy.exceptions import FeatureNotFound
-from flippy.gates import (ActorsGate, BooleanGate, ExpressionGate, Gate,
-                          GroupsGate, PercentageOfActorsGate,
-                          PercentageOfTimeGate)
-
 
 ACTOR_IF_NO_TARGET = "anonymous"
 
@@ -54,21 +50,21 @@ class Flippy:
     def enable(self, feature: FeatureName) -> None:
         try:
             f = self._backend.get(feature)
-            self._backend.enable(f.key, BooleanGate())
+            self._backend.enable(f.key, Gate.Boolean)
         except FeatureNotFound:
             pass
 
     def enable_actor(self, feature: FeatureName, target) -> None:
         try:
             f = self._backend.get(feature)
-            self._backend.enable(f.key, ActorsGate(), self._to_flipper_id(target))
+            self._backend.enable(f.key, Gate.Actors, self._to_flipper_id(target))
         except FeatureNotFound:
             pass
     
     def enable_group(self, feature: FeatureName, target) -> None:
         try:
             f = self._backend.get(feature)
-            self._backend.enable(f.key, GroupsGate(), self._to_flipper_id(target))
+            self._backend.enable(f.key, Gate.Groups, self._to_flipper_id(target))
         except FeatureNotFound:
             pass
     
@@ -78,7 +74,7 @@ class Flippy:
 
         try:
             f = self._backend.get(feature)
-            self._backend.enable(f.key, PercentageOfActorsGate(), percentage)
+            self._backend.enable(f.key, Gate.PercentageOfActors, percentage)
         except FeatureNotFound:
             pass
 
@@ -88,42 +84,42 @@ class Flippy:
 
         try:
             f = self._backend.get(feature)
-            self._backend.enable(f.key, PercentageOfTimeGate(), percentage)
+            self._backend.enable(f.key, Gate.PercentageOfTime, percentage)
         except FeatureNotFound:
             pass
 
     def disable(self, feature: FeatureName) -> None:
         try:
             f = self._backend.get(feature)
-            self._backend.disable(f.key, BooleanGate())
+            self._backend.disable(f.key, Gate.Boolean)
         except FeatureNotFound:
             pass
 
     def disable_actor(self, feature: FeatureName, target) -> None:
         try:
             f = self._backend.get(feature)
-            self._backend.disable(f.key, ActorsGate(), self._to_flipper_id(target))
+            self._backend.disable(f.key, Gate.Actors, self._to_flipper_id(target))
         except FeatureNotFound:
             pass
     
     def disable_group(self, feature: FeatureName, target) -> None:
         try:
             f = self._backend.get(feature)
-            self._backend.disable(f.key, GroupsGate(), self._to_flipper_id(target))
+            self._backend.disable(f.key, Gate.Groups, self._to_flipper_id(target))
         except FeatureNotFound:
             pass
     
     def disable_percentage_of_actors(self, feature: FeatureName) -> None:
         try:
             f = self._backend.get(feature)
-            self._backend.disable(f.key, PercentageOfActorsGate())
+            self._backend.disable(f.key, Gate.PercentageOfActors)
         except FeatureNotFound:
             pass
 
     def disable_percentage_of_time(self, feature: FeatureName) -> None:
         try:
             f = self._backend.get(feature)
-            self._backend.disable(f.key, PercentageOfTimeGate())
+            self._backend.disable(f.key, Gate.PercentageOfTime)
         except FeatureNotFound:
             pass
     

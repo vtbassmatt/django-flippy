@@ -1,16 +1,13 @@
-from json.decoder import JSONDecodeError
 import platform
 import sys
+from json.decoder import JSONDecodeError
 
 import httpx
 
-from flippy.core import BaseBackend, Feature, FeatureName
+from flippy.core import BaseBackend, Feature, FeatureName, Gate
 from flippy.exceptions import (FeatureNotFound, FlipperIdInvalid,
                                GroupNotRegistered, NameInvalid,
                                PercentageInvalid)
-from flippy.gates import (ActorsGate, BooleanGate, ExpressionGate, Gate,
-                          GroupsGate, PercentageOfActorsGate,
-                          PercentageOfTimeGate)
 
 FLIPPER_CLOUD_BASE_URL = 'https://www.flippercloud.io/adapter'
 SYSTEM_PLATFORM = f"{platform.machine() or 'unknown'}-{platform.system() or 'unknown'}"
@@ -87,9 +84,9 @@ class FlipperCloudBackend(BaseBackend):
     def enable(self, feature: FeatureName, gate: Gate, thing: str | int | None=None) -> bool:
         "Enable a gate for a thing."
         body = self._body_for_gate(gate, thing)
-        qs = { 'allow_unregistered_groups': 'true' } if gate.key == 'groups' else {}
+        qs = { 'allow_unregistered_groups': 'true' } if gate == Gate.Groups else {}
         r = self.client.post(
-            f'/features/{feature}/{gate.key}',
+            f'/features/{feature}/{gate.value}',
             json=body,
             params=qs,
         )
@@ -100,12 +97,12 @@ class FlipperCloudBackend(BaseBackend):
     def disable(self, feature: FeatureName, gate: Gate, thing: str | int | None=None) -> bool:
         "Disable a gate for a thing."
         body = self._body_for_gate(gate, thing)
-        qs = { 'allow_unregistered_groups': 'true' } if gate.key == 'groups' else {}
+        qs = { 'allow_unregistered_groups': 'true' } if gate == Gate.Groups else {}
         # httpx doesn't accept `json` on .delete(), but the body is a required part
         # of some disable requests
         req = self.client.build_request(
             'DELETE',
-            f'/features/{feature}/{gate.key}',
+            f'/features/{feature}/{gate.value}',
             json=body,
             params=qs,
         )
@@ -137,15 +134,15 @@ class FlipperCloudBackend(BaseBackend):
 
     def _body_for_gate(self, gate: Gate, thing: str | int | None) -> dict:
         match gate:
-            case BooleanGate():
+            case Gate.Boolean:
                 return {}
-            case ActorsGate():
+            case Gate.Actors:
                 return { 'flipper_id': str(thing) }
-            case GroupsGate():
+            case Gate.Groups:
                 return { 'name': str(thing) }
-            case PercentageOfActorsGate() | PercentageOfTimeGate():
+            case Gate.PercentageOfActors | Gate.PercentageOfTime:
                 return { 'percentage': str(thing) }
-            case ExpressionGate():
+            case Gate.Expression:
                 raise NotImplementedError("ExpressionGate isn't supported")
             case _:
                 raise ValueError(f"{gate} is not a known gate type")

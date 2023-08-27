@@ -1,5 +1,5 @@
-from dataclasses import dataclass
 import warnings
+from dataclasses import dataclass
 
 import pytest
 

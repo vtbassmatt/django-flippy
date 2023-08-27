@@ -1,8 +1,7 @@
 import pytest
 
-from flippy.core import BaseBackend
 from flippy.backends import MemoryBackend
-from flippy.gates import BooleanGate
+from flippy.core import BaseBackend, Gate
 
 
 @pytest.fixture
@@ -22,17 +21,17 @@ def test_feature_defaults_off(backend: BaseBackend):
 
 def test_can_enable_feature(backend: BaseBackend):
     backend.add('foo_feature')
-    backend.enable('foo_feature', BooleanGate())
+    backend.enable('foo_feature', Gate.Boolean)
     f = backend.get('foo_feature')
     assert f.state == 'on'
 
 
 def test_can_enable_then_disable_feature(backend: BaseBackend):
     backend.add('foo_feature')
-    backend.enable('foo_feature', BooleanGate())
+    backend.enable('foo_feature', Gate.Boolean)
     f = backend.get('foo_feature')
     assert f.state == 'on'
-    backend.disable('foo_feature', BooleanGate())
+    backend.disable('foo_feature', Gate.Boolean)
     assert f.state == 'off'
 
 
