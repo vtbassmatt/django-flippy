@@ -1,3 +1,5 @@
+import copy
+
 from flippy.core import BaseBackend, Feature, FeatureName, Gate
 from flippy.exceptions import FeatureNotFound
 
@@ -42,7 +44,7 @@ class MemoryBackend(BaseBackend):
     def get(self, feature: FeatureName) -> Feature:
         "Get all gate values for a feature."
         try:
-            return self._features[feature]
+            return copy.deepcopy(self._features[feature])
         except KeyError:
             raise FeatureNotFound(feature)
 

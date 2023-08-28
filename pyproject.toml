@@ -18,3 +18,10 @@ pytest = "^7.4.0"
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
+
+[tool.pytest.ini_options]
+markers = [
+    "flippercloud: live HTTP tests which require FLIPPER_CLOUD_TOKEN to be set",
+]
+# by default, don't run flippercloud tests
+addopts = "-m 'not flippercloud'"

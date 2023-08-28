@@ -32,6 +32,7 @@ def test_can_enable_then_disable_feature(backend: BaseBackend):
     f = backend.get('foo_feature')
     assert f.state == 'on'
     backend.disable('foo_feature', Gate.Boolean)
+    f = backend.get('foo_feature')
     assert f.state == 'off'
 
 
