@@ -1,10 +1,20 @@
 [tool.poetry]
 name = "django-flippy"
-version = "0.1.0"
+version = "0.7.0"
 description = "A [Flipper Cloud](https://www.flippercloud.io/) package for Django apps."
 authors = ["Matt Cooper <vtbassmatt@gmail.com>"]
 readme = "README.md"
+homepage = "https://github.com/vtbassmatt/django-flippy"
+repository = "https://github.com/vtbassmatt/django-flippy.git"
+license = "MIT"
 packages = [{include = "flippy"}]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Framework :: Django",
+    "Framework :: Django :: 4.2",
+    "Intended Audience :: Developers",
+    "Topic :: Internet :: WWW/HTTP",
+]
 
 [tool.poetry.dependencies]
 python = "^3.11"
