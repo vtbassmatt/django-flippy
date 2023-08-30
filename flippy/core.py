@@ -61,19 +61,20 @@ class Feature:
     def from_api(cls, api_payload: dict):
         self = cls(api_payload['key'])
         for gate in api_payload['gates']:
+            gateValue = gate['value']
             match gate['key']:
                 case 'boolean':
-                    self.boolean_gate.value = gate['value']
+                    self.boolean_gate.value = gateValue
                 case 'actors':
-                    self.actors_gate.value = gate['value']
+                    self.actors_gate.value = gateValue
                 case 'groups':
-                    self.groups_gate.value = gate['value']
+                    self.groups_gate.value = gateValue
                 case 'percentage_of_actors':
-                    self.percentage_of_actors_gate.value = gate['value']
+                    self.percentage_of_actors_gate.value = None if gateValue is None else int(gateValue)
                 case 'percentage_of_time':
-                    self.percentage_of_time_gate.value = gate['value']
+                    self.percentage_of_time_gate.value = None if gateValue is None else int(gateValue)
                 case 'expression':
-                    self.expression_gate.value = gate['value']
+                    self.expression_gate.value = gateValue
                 case _:
                     raise ValueError(f"{gate} is not a known gate type")
         return self
