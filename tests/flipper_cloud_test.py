@@ -12,12 +12,11 @@ try:
 except KeyError:
     TOKEN = None
 
-if not TOKEN:
-    raise pytest.UsageError('FLIPPER_CLOUD_TOKEN must be set in the environment')
-
 
 @pytest.fixture
 def backend() -> BaseBackend:
+    if not TOKEN:
+        raise pytest.UsageError('FLIPPER_CLOUD_TOKEN must be set in the environment')
     return FlipperCloudBackend(TOKEN)
 
 
