@@ -3,5 +3,10 @@
 
 {% block content %}
 <h1>Flippy Demo Project</h1>
+{% if feature_exists %}
 <p>TODO</p>
+{% else %}
+<p>The example feature doesn't exist. Perhaps it's your first time running the demo project?</p>
+<p><a href="{% url 'setup' %}">Go here to run setup</a>.</p>
+{% endif %}
 {% endblock %}
