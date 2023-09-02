@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% block title %}Flippy Demo Project{% endblock %}
+
+{% block content %}
+<h1>Your Cool App</h1>
+<p>This is your app.</p>
+<p>User: <tt>User 1</tt><br>Group: <tt>Group 15</tt></p>
+<p>What color is the background?</p>
+{% endblock %}
+
+{% block head %}
+{% if flippy.background_red %}
+  <style>
+    html {
+      color: #f1faee;
+      background-color: #e63946;
+    }
+
+    h1 {
+      color: #74bbe7;
+    }
+
+    tt {
+      color: black;
+      background-color: #e7d474;
+    }
+  </style>
+{% endif %}
+{% endblock %}

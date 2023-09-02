@@ -1,7 +1,19 @@
+from dataclasses import dataclass
 from flippy.core import BaseBackend, FeatureName, Gate
 from flippy.exceptions import FeatureNotFound
 
 ACTOR_IF_NO_TARGET = "anonymous"
+
+
+@dataclass
+class FeatureState:
+    key: str
+    boolean: bool | None
+    actors: list[str]
+    groups: list[str]
+    percent_actors: int | None
+    percent_time: int | None
+
 
 class Flippy:
     def __init__(self, backend: BaseBackend):
@@ -46,6 +58,17 @@ class Flippy:
             return True
         except FeatureNotFound:
             return False
+    
+    def get_feature_state(self, feature: FeatureName) -> FeatureState:
+        f = self._backend.get(feature)
+        return FeatureState(
+            key=f.key,
+            boolean=f.boolean_gate.value,
+            actors=f.actors_gate.value,
+            groups=f.groups_gate.value,
+            percent_actors=f.percentage_of_actors_gate.value,
+            percent_time=f.percentage_of_time_gate.value,
+        )
     
     def enable(self, feature: FeatureName) -> None:
         try:

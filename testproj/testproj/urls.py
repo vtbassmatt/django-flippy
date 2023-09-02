@@ -23,4 +23,6 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', views.index, name='index'),
     path('setup', views.setup, name='setup'),
+    path('control/<str:command>', views.control, name='control'),
+    path('app', views.app, name='app'),
 ]

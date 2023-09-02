@@ -25,10 +25,19 @@ h1 {
   font-weight: 400;
 }
 
-p {
+p, table {
   margin: 0 auto;
   padding-bottom: 0.5em;
   max-width: 65em;
+}
+
+th, td {
+  padding: .1em .25em;
+  text-align: left;
+}
+
+tt {
+  background-color: #ccc;
 }
 
 @media only screen and (max-width: 280px) {
