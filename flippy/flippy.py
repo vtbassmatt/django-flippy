@@ -38,13 +38,20 @@ class Flippy:
         else:
             actor = self._to_flipper_id(target)
 
-        return any([
+        if any([
             f.actors_gate.is_open(actor, feature),
             f.groups_gate.is_open(actor, feature),
             f.percentage_of_actors_gate.is_open(actor, feature),
             f.percentage_of_time_gate.is_open(actor, feature),
             f.expression_gate.is_open(actor, feature),
-        ])
+        ]):
+            return True
+        
+        # TODO: special check whether actor is a member of an enabled group
+        # (using the Django authentication system)
+        ...
+        
+        return False
     
     def create(self, feature: FeatureName) -> bool:
         return self._backend.add(feature)

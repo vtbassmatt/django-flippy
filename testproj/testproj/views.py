@@ -103,15 +103,12 @@ def setup(request):
 
 
 def app(request):
-    is_enabled = (
-        request.flippy.is_enabled('background_red', USER)
-        | request.flippy.is_enabled('background_red', GROUP)
-    )
+    # here we have to fake out having request.user available for this demo.
+    # in a real app, this would come from django.contrib.auth.context_processors.auth
+    request.user = USER
+
     return render(
         request,
         'app.html',
-        {
-            # ugly pattern, FIXME
-            'flippy': {'background_red': is_enabled}
-        }
+        {}
     )
