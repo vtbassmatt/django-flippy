@@ -2,7 +2,7 @@ from django.core.exceptions import ImproperlyConfigured
 from django.utils.functional import lazy
 
 from flippy import Flippy
-from flippy.backends import DjangoBackend
+from flippy.config import flippy_backend
 
 
 class FeatureContext:
@@ -34,7 +34,7 @@ class FeatureContext:
 
 class FlippyContext:
     def __init__(self, request):
-        self.flippy = Flippy(DjangoBackend())
+        self.flippy = Flippy(flippy_backend)
         self.request = request
     
     def __getattr__(self, name: str) -> FeatureContext:

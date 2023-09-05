@@ -52,6 +52,8 @@ MIDDLEWARE = [
     'flippy.middleware.flippy_middleware',
 ]
 
+FLIPPY_BACKEND = 'flippy.backends.DjangoBackend'
+
 ROOT_URLCONF = 'testproj.urls'
 
 TEMPLATES = [
