@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "django-flippy"
-version = "0.7.0"
+version = "0.8.0"
 description = "A Flipper Cloud (https://www.flippercloud.io/) package for Django apps."
 authors = ["Matt Cooper <vtbassmatt@gmail.com>"]
 readme = "README.md"

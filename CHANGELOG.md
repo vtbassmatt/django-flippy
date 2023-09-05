@@ -1,4 +1,4 @@
-# In flight
+# 0.8.0
 
 ## Major updates
 - Added a Flippy middleware (for easy access from view functions)
