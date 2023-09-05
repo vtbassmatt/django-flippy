@@ -1,3 +1,7 @@
+# In flight
+- Improve README
+- Add docs
+
 # 0.8.0
 
 ## Major updates

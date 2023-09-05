@@ -4,7 +4,8 @@ from json.decoder import JSONDecodeError
 
 import httpx
 
-from flippy.core import BaseBackend, Feature, FeatureName, Gate
+from flippy.backends import BaseBackend
+from flippy.core import Feature, FeatureName, Gate
 from flippy.exceptions import (FeatureNotFound, FlipperIdInvalid,
                                GroupNotRegistered, NameInvalid,
                                PercentageInvalid)

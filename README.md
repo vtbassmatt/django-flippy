@@ -10,10 +10,40 @@ Feature flags for Django projects, because why should the Rails people have all 
 # pip install django-flippy
 ```
 
-Then add `flippy` to your `INSTALLED_APPS` in `settings.py`.
+Next open `settings.py`.
+You need to add Flippy to your installed apps, middleware, and template context processors.
+
+```python
+# settings.py
+
+INSTALLED_APPS = [
+    ...,
+    'flippy', # <-- the app
+]
+
+MIDDLEWARE = [
+    ...,
+    'flippy.middleware.flippy_middleware', # <-- the middleware
+]
+
+TEMPLATES = [
+    {
+        ...,
+        'OPTIONS': {
+            'context_processors': [
+                ...,
+                'flippy.context.processor',  # <-- the context processor
+            ],
+        },
+    },
+]
+```
+
 Finally, `./manage.py migrate` to run the migrations.
 
 ## Usage
+
+### Raw, end-to-end example
 
 ```python
 from django.contrib.auth.models import User
@@ -39,11 +69,48 @@ else:
   print('This user gets the old, less cool feature.')
 ```
 
+### In a view
+
+```python
+# views.py
+def index(request):
+    if request.flippy.feature_exists('my_cool_feature')
+        user_has_feature = request.flippy.is_enabled('my_cool_feature', request.user)
+
+    if user_has_feature:
+      return render(request, 'cool_new_feature_index.html')
+
+    return render(request, 'index.html')
+```
+
+### In a template
+
+```python
+# views.py
+def index(request):
+  return render(request, 'index.html')
+```
+
+```html
+<!-- index.html, abridged -->
+{% if flippy.my_cool_feature.for_user %}
+<p>You have access to the cool new feature!</p>
+{% else %}
+<p>Nothing new to see here.</p>
+{% endif %}
+```
+
 ## Using Flipper Cloud
 
-The above recipe only uses the local Django-based backend and does not connect you to
+The above recipes only use the local Django-based backend and does not connect you to
 Flipper Cloud. There is a `FlipperCloudBackend` which expects a Flipper Cloud token
-passed in the constructor:
+passed in the constructor.
+
+Be warned: this backend makes direct API calls for every operation. There will
+be work to make Flipper Cloud a viable backend without having to make an HTTP request
+for every operation, coming soon.
+
+### The raw way
 
 ```python
 from flippy import Flippy
@@ -52,12 +119,18 @@ from flippy.backends import FlipperCloudBackend
 f = Flippy(FlipperCloudBackend('MY-TOKEN-HERE'))
 ```
 
-but be warned: this backend makes direct API calls for every operation. There will
-be work to make Flipper Cloud a viable backend without having to make an HTTP request
-for every operation, coming soon.
+### Using settings.py
 
-Other improvements will include ways to easily access these features from views,
-templates, etc.
+In addition to the setup you did for Installation, add the following to your `settings.py`:
+
+```python
+# settings.py
+
+FLIPPY_BACKEND = 'flippy.backends.FlipperCloudBackend'
+FLIPPY_ARGS = ['MY-TOKEN-HERE']
+```
+
+This will configure the Flipper Cloud backend everywhere, including the middleware (`request.flippy`) and context processor (`{% if flippy.foo.for_user %}`).
 
 ## Testing
 
