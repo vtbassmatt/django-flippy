@@ -6,9 +6,6 @@ from django.http import (HttpResponse, HttpResponseNotAllowed,
 from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
 
-from flippy import Flippy
-from flippy.backends import DjangoBackend
-
 # these could be Django models, but a dataclass will do for
 # demonstration purposes
 @dataclass
@@ -22,14 +19,13 @@ class Group:
     id: int
 
 
-FLIPPY = Flippy(DjangoBackend())
 USER = User(name='Jane Doe', id=1)
 GROUP = Group(name='Power Users', id=15)
 
 
 def index(request):
-    feature_exists = FLIPPY.feature_exists('background_red')
-    feature_state = FLIPPY.get_feature_state('background_red') if feature_exists else None
+    feature_exists = request.flippy.feature_exists('background_red')
+    feature_state = request.flippy.get_feature_state('background_red') if feature_exists else None
 
     return render(
         request,
@@ -52,39 +48,39 @@ def control(request, command: str):
     if request.method == 'POST':
         match command:
             case 'clear':
-                FLIPPY.clear('background_red')
+                request.flippy.clear('background_red')
             case 'bool-on':
-                FLIPPY.enable('background_red')
+                request.flippy.enable('background_red')
             case 'bool-off':
-                FLIPPY.disable('background_red')
+                request.flippy.disable('background_red')
             case 'add-user':                
-                FLIPPY.enable_actor('background_red', USER)
+                request.flippy.enable_actor('background_red', USER)
             case 'remove-user':
-                FLIPPY.disable_actor('background_red', USER)
+                request.flippy.disable_actor('background_red', USER)
             case 'add-group':
-                FLIPPY.enable_group('background_red', GROUP)
+                request.flippy.enable_group('background_red', GROUP)
             case 'remove-group':
-                FLIPPY.disable_group('background_red', GROUP)
+                request.flippy.disable_group('background_red', GROUP)
             case 'percent-less':
-                actors = FLIPPY.get_feature_state('background_red').percent_actors
+                actors = request.flippy.get_feature_state('background_red').percent_actors
                 if actors:
-                    FLIPPY.enable_percentage_of_actors('background_red', actors - 10)
+                    request.flippy.enable_percentage_of_actors('background_red', actors - 10)
             case 'percent-more':
-                actors = FLIPPY.get_feature_state('background_red').percent_actors
+                actors = request.flippy.get_feature_state('background_red').percent_actors
                 if not actors:
-                    FLIPPY.enable_percentage_of_actors('background_red', 10)
+                    request.flippy.enable_percentage_of_actors('background_red', 10)
                 elif actors < 100:
-                    FLIPPY.enable_percentage_of_actors('background_red', actors + 10)
+                    request.flippy.enable_percentage_of_actors('background_red', actors + 10)
             case 'time-less':
-                time = FLIPPY.get_feature_state('background_red').percent_time
+                time = request.flippy.get_feature_state('background_red').percent_time
                 if time:
-                    FLIPPY.enable_percentage_of_time('background_red', time - 10)
+                    request.flippy.enable_percentage_of_time('background_red', time - 10)
             case 'time-more':
-                time = FLIPPY.get_feature_state('background_red').percent_time
+                time = request.flippy.get_feature_state('background_red').percent_time
                 if not time:
-                    FLIPPY.enable_percentage_of_time('background_red', 10)
+                    request.flippy.enable_percentage_of_time('background_red', 10)
                 elif time < 100:
-                    FLIPPY.enable_percentage_of_time('background_red', time + 10)
+                    request.flippy.enable_percentage_of_time('background_red', time + 10)
             case _:
                 return HttpResponseNotFound()
 
@@ -96,8 +92,8 @@ def control(request, command: str):
 # GET requests for mutating state aren't great. But, this GET request
 # is idempotent (plus it's a demo), so it's kind of OK.
 def setup(request):
-    if not FLIPPY.feature_exists('background_red'):
-        FLIPPY.create('background_red')
+    if not request.flippy.feature_exists('background_red'):
+        request.flippy.create('background_red')
 
     return render(
         request,
@@ -108,13 +104,14 @@ def setup(request):
 
 def app(request):
     is_enabled = (
-        FLIPPY.is_enabled('background_red', USER)
-        | FLIPPY.is_enabled('background_red', GROUP)
+        request.flippy.is_enabled('background_red', USER)
+        | request.flippy.is_enabled('background_red', GROUP)
     )
     return render(
         request,
         'app.html',
         {
+            # ugly pattern, FIXME
             'flippy': {'background_red': is_enabled}
         }
     )
