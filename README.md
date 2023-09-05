@@ -14,6 +14,8 @@ Next open `settings.py`.
 You need to add Flippy to your installed apps, middleware, and template context processors.
 
 ```python
+# settings.py
+
 INSTALLED_APPS = [
     ...,
     'flippy', # <-- the app
@@ -100,9 +102,15 @@ def index(request):
 
 ## Using Flipper Cloud
 
-The above recipe only uses the local Django-based backend and does not connect you to
+The above recipes only use the local Django-based backend and does not connect you to
 Flipper Cloud. There is a `FlipperCloudBackend` which expects a Flipper Cloud token
-passed in the constructor:
+passed in the constructor.
+
+Be warned: this backend makes direct API calls for every operation. There will
+be work to make Flipper Cloud a viable backend without having to make an HTTP request
+for every operation, coming soon.
+
+### The raw way
 
 ```python
 from flippy import Flippy
@@ -111,12 +119,18 @@ from flippy.backends import FlipperCloudBackend
 f = Flippy(FlipperCloudBackend('MY-TOKEN-HERE'))
 ```
 
-but be warned: this backend makes direct API calls for every operation. There will
-be work to make Flipper Cloud a viable backend without having to make an HTTP request
-for every operation, coming soon.
+### Using settings.py
 
-Other improvements will include ways to easily access these features from views,
-templates, etc.
+In addition to the setup you did for Installation, add the following to your `settings.py`:
+
+```python
+# settings.py
+
+FLIPPY_BACKEND = 'flippy.backends.FlipperCloudBackend'
+FLIPPY_ARGS = ['MY-TOKEN-HERE']
+```
+
+This will configure the Flipper Cloud backend everywhere, including the middleware (`request.flippy`) and context processor (`{% if flippy.foo.for_user %}`).
 
 ## Testing
 
