@@ -29,6 +29,12 @@ class Flippy:
     ```
     """
     def __init__(self, backend: BaseBackend):
+        """
+        Available backends include:
+        - `flippy.backends.MemoryBackend`
+        - `flippy.backends.DjangoBackend`
+        - `flippy.backends.FlipperCloudBackend`
+        """
         self._backend = backend
     
     def is_enabled(self, feature: FeatureName, target = None) -> bool:

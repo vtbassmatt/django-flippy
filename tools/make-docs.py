@@ -16,4 +16,4 @@ version = project_data['tool']['poetry']['version']
 pdoc.render.configure(
     footer_text = f'django-flippy {version}',
 )
-pdoc.pdoc('flippy', output_directory=DOCS_DIR)
+pdoc.pdoc('flippy', 'flippy.core', 'flippy.backends', output_directory=DOCS_DIR)

@@ -160,3 +160,8 @@ class BaseBackend(metaclass=ABCMeta):
     # end dict implementation
 
 BaseBackend.register(dict)
+
+
+__all__ = [
+    BaseBackend,
+]

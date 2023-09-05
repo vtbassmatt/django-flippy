@@ -1,6 +1,11 @@
 from flippy.core import BaseBackend, Feature, FeatureName, Gate
 from flippy.exceptions import FeatureNotFound
-from flippy.models import FlippyFeature, FlippyActorGate, FlippyGroupGate
+
+from django.core.exceptions import ImproperlyConfigured
+try:
+    from flippy.models import FlippyFeature, FlippyActorGate, FlippyGroupGate
+except ImproperlyConfigured:
+    pass
 
 from django.core.exceptions import ValidationError
 from django.db.utils import IntegrityError
