@@ -49,7 +49,10 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'flippy.middleware.flippy_middleware',
 ]
+
+FLIPPY_BACKEND = 'flippy.backends.DjangoBackend'
 
 ROOT_URLCONF = 'testproj.urls'
 
@@ -64,6 +67,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'flippy.context.processor',
             ],
         },
     },

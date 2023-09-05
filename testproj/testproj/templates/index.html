@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Flippy Demo Project{% endblock %}
+
+{% block content %}
+<h1>Flippy Demo Project</h1>
+{% if feature_exists %}
+<p><a href="{% url 'app' %}" target="_blank">Open the app experience</a></p>
+<p>Control panel</p>
+<table>
+  <tr>
+    <th>Feature name</th>
+    <td><code>{{ feature_state.key }}</code></td>
+    <td><button type="button" onclick="javascript:sendCommand('clear');">Clear all state</button></td>
+  </tr>
+  <tr>
+    <th>Enabled globally?</th>
+    <td>{% if feature_state.boolean is None %}not set{% else %}{{ feature_state.boolean }}{% endif %}</td>
+    <td>
+      <button type="button" onclick="javascript:sendCommand('bool-off');">Disable globally</button>
+      <button type="button" onclick="javascript:sendCommand('bool-on');">Enable globally</button>
+    </td>
+  </tr>
+  <tr>
+    <th>Enabled actors</th>
+    <td>{% if feature_state.actors %}{{ feature_state.actors }}{% else %}none{% endif %}</td>
+    <td>
+      <button type="button" onclick="javascript:sendCommand('remove-user');">Remove User 1</button>
+      <button type="button" onclick="javascript:sendCommand('add-user');">Add User 1</button>
+    </td>
+  </tr>
+  <tr>
+    <th>Enabled groups</th>
+    <td>{% if feature_state.groups %}{{ feature_state.groups }}{% else %}none{% endif %}</td>
+    <td>
+      <button type="button" onclick="javascript:sendCommand('remove-group');">Remove Group 15</button>
+      <button type="button" onclick="javascript:sendCommand('add-group');">Add Group 15</button>
+    </td>
+  </tr>
+  <tr>
+    <th>% of actors</th>
+    <td>{% if feature_state.percent_actors is None %}not set{% else %}{{ feature_state.percent_actors }}{% endif %}</td>
+    <td>
+      <button type="button" onclick="javascript:sendCommand('percent-less');">10% fewer</button>
+      <button type="button" onclick="javascript:sendCommand('percent-more');">10% more</button>
+    </td>
+  </tr>
+  <tr>
+    <th>% of time</th>
+    <td>{% if feature_state.percent_time is None %}not set{% else %}{{ feature_state.percent_time }}{% endif %}</td>
+    <td>
+      <button type="button" onclick="javascript:sendCommand('time-less');">10% less</button>
+      <button type="button" onclick="javascript:sendCommand('time-more');">10% more</button>
+    </td>
+  </tr>
+</table>
+<p>Raw feature data</p>
+<p>{{ feature_state }}</p>
+{% else %}
+<p>The example feature doesn't exist. Perhaps it's your first time running the demo project?</p>
+<p><a href="{% url 'setup' %}">Go here to run setup</a>.</p>
+{% endif %}
+{% endblock %}

@@ -17,6 +17,12 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 
+from testproj import views
+
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('', views.index, name='index'),
+    path('setup', views.setup, name='setup'),
+    path('control/<str:command>', views.control, name='control'),
+    path('app', views.app, name='app'),
 ]
