@@ -1,6 +1,7 @@
 import copy
 
-from flippy.core import BaseBackend, Feature, FeatureName, Gate
+from flippy.backends import BaseBackend
+from flippy.core import Feature, FeatureName, Gate
 from flippy.exceptions import FeatureNotFound
 
 

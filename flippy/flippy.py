@@ -1,5 +1,6 @@
 from dataclasses import dataclass
-from flippy.core import BaseBackend, FeatureName, Gate
+from flippy.backends.base import BaseBackend
+from flippy.core import FeatureName, Gate
 from flippy.exceptions import FeatureNotFound
 
 ACTOR_IF_NO_TARGET = "anonymous"
