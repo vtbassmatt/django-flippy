@@ -6,6 +6,7 @@ authors = ["Matt Cooper <vtbassmatt@gmail.com>"]
 readme = "README.md"
 homepage = "https://github.com/vtbassmatt/django-flippy"
 repository = "https://github.com/vtbassmatt/django-flippy.git"
+documentation = "https://vtbassmatt.github.io/django-flippy/"
 license = "MIT"
 packages = [{include = "flippy"}]
 classifiers = [
