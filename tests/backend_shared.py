@@ -1,7 +1,8 @@
 """
 Tests which should run for every backend.
 """
-from flippy.core import BaseBackend, Gate
+from flippy.backends import BaseBackend
+from flippy.core import Gate
 
 # NOTE! Only create features with the prefix listed here. That way our teardown
 # for flipper_cloud_test will (attempt to) clean up after itself. Like this:

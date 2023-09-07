@@ -1,7 +1,6 @@
 import pytest
 
-from flippy.backends import MemoryBackend
-from flippy.core import BaseBackend
+from flippy.backends import BaseBackend, MemoryBackend
 from tests.backend_shared import *
 
 

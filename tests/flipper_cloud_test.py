@@ -4,8 +4,7 @@ pytestmark = pytest.mark.flippercloud
 
 from os import environ
 
-from flippy.backends import FlipperCloudBackend
-from flippy.core import BaseBackend
+from flippy.backends import BaseBackend, FlipperCloudBackend
 from tests.backend_shared import *
 
 try:

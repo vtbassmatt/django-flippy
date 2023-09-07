@@ -1,6 +1,6 @@
 SECRET_KEY = "fake-key"
 INSTALLED_APPS = [
-    "flippy",
+    "flippy.apps.FlippyConfig",
     "tests",
 ]
 DATABASES = {
