@@ -1,5 +1,6 @@
 from dataclasses import dataclass, field
 from enum import Enum
+import json
 from typing import Literal, NewType
 
 from flippy.gates import (ActorsGate, BooleanGate, ExpressionGate, GroupsGate,
@@ -92,3 +93,10 @@ class Feature:
             self.percentage_of_time_gate == other.percentage_of_time_gate,
             self.expression_gate == other.expression_gate,
         ])
+
+
+class FeatureEncoder(json.JSONEncoder):
+    def default(self, obj):
+        if isinstance(obj, Feature):
+            return obj.to_api()
+        return json.JSONEncoder.default(self, obj)

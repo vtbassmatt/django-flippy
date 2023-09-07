@@ -149,3 +149,11 @@ class DjangoBackend(BaseBackend):
         "Get all gate values for all features at once."
         features = FlippyFeature.objects.all()
         return [f.as_feature() for f in features]
+
+    def to_json(self) -> str:
+        "Produce a JSON-formatted string containing state for all features."
+        raise NotImplementedError()
+
+    def from_json(self, new_state: str) -> None:
+        "Clear current state and replace with state from a JSON-formatted string."
+        raise NotImplementedError()

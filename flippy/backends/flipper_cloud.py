@@ -171,3 +171,11 @@ class FlipperCloudBackend(BaseBackend):
                     raise NameInvalid(result.get('message', ''))
 
         response.raise_for_status()
+
+    def to_json(self) -> str:
+        "Produce a JSON-formatted string containing state for all features."
+        raise NotImplementedError()
+
+    def from_json(self, new_state: str) -> None:
+        "Clear current state and replace with state from a JSON-formatted string."
+        raise NotImplementedError()
