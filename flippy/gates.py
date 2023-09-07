@@ -23,6 +23,12 @@ class BooleanGate:
     def is_open(self, target: str, feature: 'FeatureName'):
         return bool(self.value)
 
+    def __eq__(self, other):
+        if not isinstance(other, BooleanGate):
+            return False
+        
+        return self.value == other.value
+
 @dataclass
 class ActorsGate:
     value: list[str]
@@ -40,6 +46,15 @@ class ActorsGate:
     def is_open(self, target: str, feature: 'FeatureName'):
         return target in self.value
 
+    def __eq__(self, other):
+        if not isinstance(other, ActorsGate):
+            return False
+
+        if self.value is None or other.value is None:
+            return False
+        
+        return sorted(self.value) == sorted(other.value)
+
 @dataclass
 class GroupsGate:
     value: list[str]
@@ -56,6 +71,15 @@ class GroupsGate:
 
     def is_open(self, target: str, feature: 'FeatureName'):
         return target in self.value
+
+    def __eq__(self, other):
+        if not isinstance(other, GroupsGate):
+            return False
+        
+        if self.value is None or other.value is None:
+            return False
+        
+        return sorted(self.value) == sorted(other.value)
 
 @dataclass
 class PercentageOfActorsGate:
@@ -85,6 +109,12 @@ class PercentageOfActorsGate:
         target_value = round(100 * target_hash / 2**32)
         return target_value < self.value
 
+    def __eq__(self, other):
+        if not isinstance(other, PercentageOfActorsGate):
+            return False
+        
+        return self.value == other.value
+
 @dataclass
 class PercentageOfTimeGate:
     value: Percentage | None = None
@@ -103,6 +133,12 @@ class PercentageOfTimeGate:
         r = random.randint(0, 100)
         return self.value >= r
 
+    def __eq__(self, other):
+        if not isinstance(other, PercentageOfTimeGate):
+            return False
+        
+        return self.value == other.value
+
 @dataclass
 class ExpressionGate:
     value: Any = None # TODO
@@ -116,3 +152,9 @@ class ExpressionGate:
 
     def is_open(self, target: str, feature: 'FeatureName'):
         return False
+
+    def __eq__(self, other):
+        if not isinstance(other, ExpressionGate):
+            return False
+
+        return self.value == other.value

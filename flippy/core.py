@@ -78,3 +78,17 @@ class Feature:
                 case _:
                     raise ValueError(f"{gate} is not a known gate type")
         return self
+
+    def __eq__(self, other):
+        if not isinstance(other, Feature):
+            return False
+        
+        return all([
+            self.key == other.key,
+            self.boolean_gate == other.boolean_gate,
+            self.actors_gate == other.actors_gate,
+            self.groups_gate == other.groups_gate,
+            self.percentage_of_actors_gate == other.percentage_of_actors_gate,
+            self.percentage_of_time_gate == other.percentage_of_time_gate,
+            self.expression_gate == other.expression_gate,
+        ])
