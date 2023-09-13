@@ -43,6 +43,20 @@ class FlippyFeature(models.Model):
         f.percentage_of_actors_gate.value = self.percentage_of_actors
         f.percentage_of_time_gate.value = self.percentage_of_time
         return f
+    
+    @classmethod
+    def from_feature(cls, feature: Feature):
+        f = cls(key=feature.key)
+        f.save()    # to get an ID assigned
+        f.boolean = feature.boolean_gate.value
+        for a in feature.actors_gate.value:
+            f.enabled_actors.create(key=a)
+        for g in feature.groups_gate.value:
+            f.enabled_groups.create(key=g)
+        f.percentage_of_actors = feature.percentage_of_actors_gate.value
+        f.percentage_of_time = feature.percentage_of_time_gate.value
+        f.save()
+        return f
 
 
 class FlippyActorGate(models.Model):

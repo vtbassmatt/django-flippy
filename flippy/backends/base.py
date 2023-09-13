@@ -1,6 +1,7 @@
 from abc import ABCMeta, abstractmethod
+import json
 
-from flippy.core import FeatureName, Feature, Gate
+from flippy.core import FeatureEncoder, FeatureName, Feature, Gate
 
 
 class BaseBackend(metaclass=ABCMeta):
@@ -66,7 +67,9 @@ class BaseBackend(metaclass=ABCMeta):
     @abstractmethod
     def to_json(self) -> str:
         "Produce a JSON-formatted string containing state for all features."
-        pass
+        # default implementation; feel free to use or override
+        features = {f.key: f for f in self.get_all()}
+        return json.dumps(features, cls=FeatureEncoder, separators=(',', ':'))
 
     @abstractmethod
     def from_json(self, new_state: str) -> None:
