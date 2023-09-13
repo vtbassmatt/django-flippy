@@ -1,7 +1,8 @@
 import copy
+import json
 
 from flippy.backends import BaseBackend
-from flippy.core import Feature, FeatureName, Gate
+from flippy.core import Feature, FeatureEncoder, FeatureName, Gate
 from flippy.exceptions import FeatureNotFound
 
 
@@ -116,3 +117,14 @@ class MemoryBackend(BaseBackend):
     def get_all(self) -> list[Feature]:
         "Get all gate values for all features at once."
         return super().get_all()
+
+    def to_json(self) -> str:
+        "Produce a JSON-formatted string containing state for all features."
+        return json.dumps(self._features, cls=FeatureEncoder, separators=(',', ':'))
+
+    def from_json(self, new_state: str) -> None:
+        "Clear current state and replace with state from a JSON-formatted string."
+        self._features = {}
+        features_raw = json.loads(new_state)
+        for k, v in features_raw.items():
+            self._features[k] = Feature.from_api(v)

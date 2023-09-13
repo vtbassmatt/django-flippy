@@ -1,3 +1,7 @@
+# In flight
+## Major updates
+- Added syncing from Flipper Cloud to a local backend
+
 # 0.8.1
 - Improve README
 - Add docs

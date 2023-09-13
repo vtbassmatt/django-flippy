@@ -1,5 +1,7 @@
+import json
+
 from flippy.backends import BaseBackend
-from flippy.core import Feature, FeatureName, Gate
+from flippy.core import Feature, FeatureEncoder, FeatureName, Gate
 from flippy.exceptions import FeatureNotFound
 
 from django.core.exceptions import ImproperlyConfigured
@@ -149,3 +151,19 @@ class DjangoBackend(BaseBackend):
         "Get all gate values for all features at once."
         features = FlippyFeature.objects.all()
         return [f.as_feature() for f in features]
+
+    def to_json(self) -> str:
+        "Produce a JSON-formatted string containing state for all features."
+        return super().to_json()
+
+    def from_json(self, new_state: str) -> None:
+        "Clear current state and replace with state from a JSON-formatted string."
+        return self._from_json_naive(new_state)
+
+    def _from_json_naive(self, new_state: str) -> None:
+        FlippyFeature.objects.all().delete()
+        features_raw = json.loads(new_state)
+        for value in features_raw.values():
+            f = Feature.from_api(value)
+            # FlippyFeature.from_feature saves the object
+            ff = FlippyFeature.from_feature(f)

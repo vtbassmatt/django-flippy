@@ -38,7 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'testproj.apps.TestProjConfig',
-    'flippy',
+    'flippy.apps.FlippyConfig',
 ]
 
 MIDDLEWARE = [

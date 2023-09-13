@@ -155,3 +155,16 @@ def test_can_roll_out_by_percent_actor(backend: BaseBackend):
         .percentage_of_actors_gate
         .is_open('anyactor', roll_me_out) == True
     )
+
+
+def test_to_json(backend: BaseBackend):
+    json_me_1 = f'{TEST_FEATURE}_jsonme1'
+    json_me_2 = f'{TEST_FEATURE}_jsonme2'
+    backend.add(json_me_1)
+    backend.add(json_me_2)
+    backend.enable(json_me_1, Gate.Boolean)
+    backend.enable(json_me_2, Gate.Actors, 'user1')
+    backend.enable(json_me_2, Gate.Groups, 'group1')
+    backend.enable(json_me_2, Gate.PercentageOfActors, 25)
+    
+    assert backend.to_json() == '{"django_flippy_testcase_jsonme1":{"key":"django_flippy_testcase_jsonme1","state":"on","gates":[{"key":"boolean","name":"boolean","value":true},{"key":"actors","name":"actor","value":[]},{"key":"groups","name":"group","value":[]},{"key":"percentage_of_actors","name":"percentage_of_actors","value":null},{"key":"percentage_of_time","name":"percentage_of_time","value":null},{"key":"expression","name":"expression","value":null}]},"django_flippy_testcase_jsonme2":{"key":"django_flippy_testcase_jsonme2","state":"conditional","gates":[{"key":"boolean","name":"boolean","value":null},{"key":"actors","name":"actor","value":["user1"]},{"key":"groups","name":"group","value":["group1"]},{"key":"percentage_of_actors","name":"percentage_of_actors","value":"25"},{"key":"percentage_of_time","name":"percentage_of_time","value":null},{"key":"expression","name":"expression","value":null}]}}'
