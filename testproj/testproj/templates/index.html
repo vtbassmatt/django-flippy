@@ -6,7 +6,7 @@
 <h1>Flippy Demo Project</h1>
 {% if feature_exists %}
 <p><a href="{% url 'app' %}" target="_blank">Open the app experience</a></p>
-<p>Control panel</p>
+<h2>Control panel</h2>
 <table>
   <tr>
     <th>Feature name</th>
@@ -54,8 +54,16 @@
     </td>
   </tr>
 </table>
-<p>Raw feature data</p>
+
+<h2>Raw feature data</h2>
 <p>{{ feature_state }}</p>
+
+<h2>Sync from cloud</h2>
+<p>
+  This demo reads from local Django objects. You can run<br>
+  <code>FLIPPER_CLOUD_TOKEN=yourtoken python manage.py sync-from-cloud</code><br>
+  to sync state from <a href="https://flippercloud.io">Flipper Cloud</a>.
+</p>
 {% else %}
 <p>The example feature doesn't exist. Perhaps it's your first time running the demo project?</p>
 <p><a href="{% url 'setup' %}">Go here to run setup</a>.</p>

@@ -25,6 +25,13 @@ h1 {
   font-weight: 400;
 }
 
+h2 {
+  color: #555;
+  font-size: 1.6em;
+  font-weight: 400;
+  margin-top: .2em;
+}
+
 p, table {
   margin: 0 auto;
   padding-bottom: 0.5em;
