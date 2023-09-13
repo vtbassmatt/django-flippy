@@ -104,11 +104,17 @@ def index(request):
 
 The above recipes only use the local Django-based backend and does not connect you to
 Flipper Cloud. There is a `FlipperCloudBackend` which expects a Flipper Cloud token
-passed in the constructor.
+passed in the constructor. Be warned: this backend makes direct API calls for every
+operation.
 
-Be warned: this backend makes direct API calls for every operation. There will
-be work to make Flipper Cloud a viable backend without having to make an HTTP request
-for every operation, coming soon.
+The better way to use Flipper Cloud is to set yourself up to use the Django backend.
+Then run this periodically:
+
+```ShellSession
+FLIPPER_CLOUD_TOKEN=mytoken python manage.py sync-from-cloud
+```
+
+That will sync your Flipper Cloud data down to your local Django backend.
 
 ### The raw way
 
