@@ -1,6 +1,9 @@
-# In flight
+# 0.9.0
 ## Major updates
 - Added syncing from Flipper Cloud to a local backend
+
+## Minor updates
+- Build docs automatically when pushing a tag
 
 # 0.8.1
 - Improve README
